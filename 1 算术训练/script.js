@@ -1,4 +1,11 @@
 let question = [];
+let timer = null;
+let sum_counter = 0;
+let right_counter = 0;
+let right_rate = 0;
+let question_flag = true;
+const start_time = new Date().getTime();
+let now_time = 0;
 
 const num1_ele = document.querySelector("#num1");
 const num2_ele = document.querySelector("#num2");
@@ -9,6 +16,10 @@ const answer_ele = document.querySelector(".user_answer");
 const btn_sub = document.querySelector("#sub");
 const btn_rem = document.querySelector("#rem");
 const info = document.querySelector(".info");
+const sum_questions_ele = document.querySelector(".all");
+const right_num_ele = document.querySelector(".right_num");
+const right_rate_ele = document.querySelector(".right_rate");
+const time_sum_ele = document.querySelector(".time_sum");
 // const btn_next = document.querySelector("#next");
 
 displayQuestion();
@@ -17,9 +28,14 @@ btn_sub.addEventListener("click", function (e) {
   e.preventDefault();
   const answer = answer_ele.value;
   if (judgeAnswer(answer)) {
+    sum_counter++;
+    if (question_flag) right_counter++;
+    right_rate = (right_counter / sum_counter).toFixed(3) * 100;
+    displayUserInfo();
     displayQuestion();
   } else {
-    info.style.display = "block";
+    question_flag = false;
+    info.textContent = "答错了再试一试";
   }
   answer_ele.value = "";
 });
@@ -33,6 +49,15 @@ btn_rem.addEventListener("click", function (e) {
 //   // e.preventDefault();
 // });
 
+// 功能：显示用户当前信息
+function displayUserInfo() {
+  sum_questions_ele.textContent = sum_counter;
+  right_num_ele.textContent = right_counter;
+  right_rate_ele.textContent = right_rate;
+  now_time = new Date().getTime();
+  time_sum_ele.textContent = Math.floor((now_time - start_time) / 1000);
+}
+
 // 功能：显示式子
 function displayQuestion() {
   question = createQuestion();
@@ -41,7 +66,9 @@ function displayQuestion() {
   num3_ele.textContent = question[4];
   op1_ele.textContent = changeOp(question[1]);
   op2_ele.textContent = changeOp(question[3]);
-  info.style.display = "none";
+  info.textContent = "";
+  question_flag = true;
+
   console.log(question);
   console.log(
     "原结果为:",
@@ -79,12 +106,12 @@ function changeOp(op) {
 function createQuestion() {
   const arr = [
     getRandomNum(3),
-    getRandomNum(3),
-    getRandomNum(3),
     getRandomNum(2),
     getRandomNum(2),
+    getRandomNum(3),
     getRandomNum(2),
     getRandomNum(1),
+    getRandomNum(3),
     getRandomNum(1),
     getRandomNum(1),
   ];
@@ -113,12 +140,7 @@ function createQuestion() {
   function backTracking(nums, res, start_index, flags) {
     // 满足条件
     if (nums.length === 3 && res > 100 && res < 2000) {
-      const question = [];
-      question.push(nums[0]);
-      question.push(ops[0]);
-      question.push(nums[1]);
-      question.push(ops[1]);
-      question.push(nums[2]);
+      const question = [nums[0], ops[0], nums[1], ops[1], nums[2]];
       questions.push(question);
       return;
     }
