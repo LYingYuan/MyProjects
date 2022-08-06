@@ -23,7 +23,7 @@ input {
 
 .left {
   position: relative;
-  width: 70%;
+  width: 100%;
   /* background-color: gray; */
 }
 
@@ -45,6 +45,14 @@ input {
   left: 50%;
   transform: translate(-50%, -50%);
   /* background-color: red; */
+}
+
+.question > button {
+  height: 4rem;
+  border: 2px solid gray;
+  background-color: white;
+  padding: 0 1rem;
+  margin: 0 2rem;
 }
 
 .question > span {
