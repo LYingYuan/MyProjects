@@ -112,7 +112,7 @@ function createQuestion() {
   // 回溯算法处理数据
   function backTracking(nums, res, start_index, flags) {
     // 满足条件
-    if (nums.length === 3 && res > 1 && res < 10000) {
+    if (nums.length === 3 && res > 100 && res < 2000) {
       const question = [];
       question.push(nums[0]);
       question.push(ops[0]);
